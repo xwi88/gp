@@ -13,3 +13,14 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+testdata
+!testdata/saved_model_half_plus_two_cpu
+!testdata/saved_model_half_plus_two_cpu/default
+
+build/
+models/
+tmp/
+files/
+*.gz
+*.log
