@@ -33,7 +33,7 @@ func New(name, exportDir string, tags []string, inputParamKey, outputParamKey st
 }
 
 // Predict tf predict
-func (m *Model) Predict(data interface{}) (ret []interface{}, err error) {
+func (m *Model) Predict(data interface{}) (ret interface{}, err error) {
 	if data == nil {
 		return nil, errors.New("nil input")
 	}
@@ -52,9 +52,7 @@ func (m *Model) Predict(data interface{}) (ret []interface{}, err error) {
 	if err != nil {
 		return nil, err
 	}
-	for i, _ := range rt {
-		ret = append(ret, rt[i].Value())
-	}
+	ret = rt[0].Value() // WARN: only result
 	return
 }
 
@@ -77,8 +75,7 @@ func (m *Model) Load() error {
 
 // Register register and load model
 func Register(name, exportDir string, tags []string) (*Model, error) {
-	m := New(name, exportDir, tags, "input", "output")
-	return m, m.Load()
+	return RegisterWithParamName(name, exportDir, tags, "input", "output")
 }
 
 // Register register and load model

@@ -11,12 +11,25 @@ var globalModels map[string]Model
 
 type Model interface {
 	Load() error
-	Predict(interface{}) ([]interface{}, error)
+	Predict(interface{}) (interface{}, error) // input maybe single, slice; output is the same
 	Destruct() error
+}
+
+// ModelOptions used to register and config the model
+type ModelOptions struct {
 }
 
 //  default param name: input, output
 func RegisterTFModel(name, path string, tags []string) bool {
+	RegisterTFModelWithParamName(name, path, tags, "input", "output")
+	return false
+}
+
+func GetModel(modelName string) Model {
+	return globalModels[modelName]
+}
+
+func RegisterTFModelWithParamName(name, path string, tags []string, inputParamKey, outputParamKey string) bool {
 	gpLock.Lock()
 	defer gpLock.Unlock()
 
@@ -27,7 +40,7 @@ func RegisterTFModel(name, path string, tags []string) bool {
 		return true
 	}
 
-	m, err := tf.Register(name, path, tags)
+	m, err := tf.RegisterWithParamName(name, path, tags, inputParamKey, outputParamKey)
 	if err == nil {
 		globalModels[name] = m
 		return true
@@ -36,12 +49,13 @@ func RegisterTFModel(name, path string, tags []string) bool {
 	return false
 }
 
-func Predict(modelName string, input []interface{}) (output []interface{}, err error) {
+func Predict(modelName string, input interface{}) (output interface{}, err error) {
 	if m, exist := globalModels[modelName]; exist {
 		output, err = m.Predict(input)
 		return
 	}
 	// TODO log
+
 	return
 }
 
