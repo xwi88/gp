@@ -75,7 +75,7 @@ func (m *Model) Load() error {
 
 // Register register and load model
 func Register(name, exportDir string, tags []string) (*Model, error) {
-	return RegisterWithParamName(name, exportDir, tags, "input", "output")
+	return RegisterWithParamName(name, exportDir, tags, "serving_default_input", "StatefulPartitionedCall")
 }
 
 // Register register and load model

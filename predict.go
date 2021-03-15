@@ -21,7 +21,7 @@ type ModelOptions struct {
 
 //  default param name: input, output
 func RegisterTFModel(name, path string, tags []string) bool {
-	RegisterTFModelWithParamName(name, path, tags, "input", "output")
+	RegisterTFModelWithParamName(name, path, tags, "serving_default_input", "StatefulPartitionedCall")
 	return false
 }
 

@@ -2,9 +2,9 @@
 
 go predict with tensorflow, pytorch and others 
 
-## Dependents
+## Tensorflow
 
-### Tensorflow
+### Ref
 
 - [tensorflow](https://github.com/tensorflow/tensorflow)
 - [tensorflow-serving](https://github.com/tensorflow/serving)
@@ -30,22 +30,25 @@ export LIBRARY_PATH=$LIBRARY_PATH:~/mydir/lib
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/mydir/lib
 ```
 
-## Import
+### Usage
 
-```bash
-go get -u github.com/xwi88/gp
-```
+`go get -u github.com/xwi88/gp`
 
-## TF
+### Example
 
 ```bash
 # register model
-RegisterTFModelWithParamName(modelName, exportDir, tags, "x", "y")
+RegisterTFModelWithParamName(modelName, exportDir, tags, "param_name_input", "param_name_output")
 # get model
 GetModel(modelName)
 # predict with the special model
 output, err := Predict(modelName, inputS)
 ```
+
+#### Params Look Up
+
+- `pip install tensorflow`
+- `saved_model_cli show --all --dir output/keras`
 
 ## Tips
 
