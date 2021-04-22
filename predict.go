@@ -11,7 +11,7 @@ var globalModels map[string]Model
 
 type Model interface {
 	Load() error
-	Predict(interface{}) (interface{}, error) // input maybe single, slice; output is the same
+	Predict(interface{}) (interface{}, error) // input maybe single slice; output as the same
 	Destruct() error
 }
 
@@ -21,8 +21,7 @@ type ModelOptions struct {
 
 //  default param name: input, output
 func RegisterTFModel(name, path string, tags []string) bool {
-	RegisterTFModelWithParamName(name, path, tags, "serving_default_input", "StatefulPartitionedCall")
-	return false
+	return RegisterTFModelWithParamName(name, path, tags, "serving_default_input", "StatefulPartitionedCall")
 }
 
 func GetModel(modelName string) Model {
