@@ -13,24 +13,52 @@ go predict with tensorflow, pytorch and others
 
 >https://www.tensorflow.org/install/lang_go
 
-### C lib install
+### C Lib
 
 - [download](https://www.tensorflow.org/install/lang_c#download)
-- [current support:libtensorflow-cpu-darwin-x86_64-2.3.0](https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz)
+- [libtensorflow-cpu-darwin-x86_64-2.3.0](https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz)
+- [libtensorflow-cpu-linux-x86_64-2.3.0](https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.3.0.tar.gz)
 
 ```bash
-# Standard Install
-sudo tar -C /usr/local -xzf (downloaded file)
-
-# Non sys dir install
-tar -C ~/mydir -xzf libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
-
-#ldconfig
-export LIBRARY_PATH=$LIBRARY_PATH:~/mydir/lib
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/mydir/lib
+#export LIB_TENSORFLOW_FILE=libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
+export LIB_TENSORFLOW_FILE=libtensorflow-cpu-linux-x86_64-2.3.0.tar.gz
 ```
 
-### Usage
+#### Standard Install
+
+```bash
+tar -C /usr/local -xzf ${LIB_TENSORFLOW_FILE}
+ldconfig
+```
+
+#### Non Sys Dir Install
+
+```bash
+export LIB_TENSORFLOW_INSTALL_DIR=~/mydir
+tar -C ${LIB_TENSORFLOW_INSTALL_DIR} -xzf ${LIB_TENSORFLOW_FILE}
+
+# config linker
+export LIBRARY_PATH=$LIBRARY_PATH:${LIB_TENSORFLOW_INSTALL_DIR}/lib # For both Linux and macOS X
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${LIB_TENSORFLOW_INSTALL_DIR}/lib # For Linux only
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:${LIB_TENSORFLOW_INSTALL_DIR}/lib # For macOS X only
+```
+
+#### C Lib Check
+
+```cgo
+#include <stdio.h>
+#include <tensorflow/c/c_api.h>
+
+int main() {
+  printf("Hello from TensorFlow C library version %s\n", TF_Version());
+  return 0;
+}
+```
+
+- `gcc hello_tf.c -ltensorflow -o hello_tf`
+- `./hello_tf`
+
+### Go Usage
 
 `go get -u github.com/xwi88/gp`
 
@@ -45,10 +73,22 @@ GetModel(modelName)
 output, err := Predict(modelName, inputS)
 ```
 
-#### Params Look Up
+### Params Look Up
 
 - `pip install tensorflow`
 - `saved_model_cli show --all --dir output/keras`
+
+### Docker Images
+
+>**tf version now will be ok in: macos & ubuntu16.04**
+
+|image repos|target|notes|
+|:--|:--|:--|
+|v8fg/ubuntu:16.04-go1.16-tf-cpu|build||
+|v8fg/ubuntu:16.04-tf-cpu|run||
+
+- more docker images ref: [v8fg/docker-compose-resources](https://github.com/v8fg/docker-compose-resources)
+- official images: [TensorFlow Docker](https://www.tensorflow.org/install/docker)
 
 ## Tips
 
