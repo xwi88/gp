@@ -66,7 +66,9 @@ int main() {
 
 ```bash
 # register model
-RegisterTFModelWithParamName(modelName, exportDir, tags, "param_name_input", "param_name_output")
+RegisterTFModelWithParamName(modelName, exportDir, tags, []string{"param_name_input"}, "param_name_output")
+
+# predict.go
 # get model
 GetModel(modelName)
 # predict with the special model
