@@ -19,9 +19,9 @@ type Model interface {
 type ModelOptions struct {
 }
 
-// RegisterTFModel register TFModel with default output and input param key
+// RegisterTFModel register TFModel with default input and output param key
 func RegisterTFModel(name, path string, tags []string) bool {
-	return RegisterTFModelWithParamName(name, path, tags, "StatefulPartitionedCall", "serving_default_input")
+	return RegisterTFModelWithParamName(name, path, tags, []string{"serving_default_input"}, "StatefulPartitionedCall")
 }
 
 // GetModel get model by model name
@@ -29,8 +29,8 @@ func GetModel(name string) Model {
 	return globalModels[name]
 }
 
-// RegisterTFModelWithParamName register TFModel with output and variadic input param key
-func RegisterTFModelWithParamName(name, path string, tags []string, outputParamKey string, inputParamKey ...string) bool {
+// RegisterTFModelWithParamName register TFModel with input and output param key
+func RegisterTFModelWithParamName(name, path string, tags, inputParamKey []string, outputParamKey string) bool {
 	gpLock.Lock()
 	defer gpLock.Unlock()
 
@@ -41,7 +41,7 @@ func RegisterTFModelWithParamName(name, path string, tags []string, outputParamK
 		return true
 	}
 
-	m, err := tf.RegisterWithParamName(name, path, tags, outputParamKey, inputParamKey...)
+	m, err := tf.RegisterWithParamName(name, path, tags, inputParamKey, outputParamKey)
 	if err == nil {
 		globalModels[name] = m
 		return true
