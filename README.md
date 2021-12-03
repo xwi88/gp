@@ -1,6 +1,15 @@
 # gp
 
-go predict with tensorflow, pytorch and others 
+go predict with tensorflow, pytorch and others
+
+## Env
+
+> work well in
+
+- go 1.16+
+- os: x86_64, `Ubuntu 14.04+` | `MacOS`
+- Tensorflow C API: **2.3.0**
+- github.com/tensorflow/tensorflow v2.1.3 or v2.1.4
 
 ## Tensorflow
 
@@ -24,14 +33,18 @@ go predict with tensorflow, pytorch and others
 export LIB_TENSORFLOW_FILE=libtensorflow-cpu-linux-x86_64-2.3.0.tar.gz
 ```
 
-#### Standard Install
+#### **Standard Install**
 
 ```bash
 tar -C /usr/local -xzf ${LIB_TENSORFLOW_FILE}
+# linux
 ldconfig
+
+# macos 11.2.2+ work well
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 ```
 
-#### Non Sys Dir Install
+#### *Non Sys Dir Install*
 
 ```bash
 export LIB_TENSORFLOW_INSTALL_DIR=~/mydir
@@ -95,16 +108,30 @@ output, err := Predict(modelName, inputS)
 ## Quick run in local
 
 ```bash
-wget  https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
+wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
 export LIB_TENSORFLOW_FILE=libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
 tar -C /usr/local -xzf ${LIB_TENSORFLOW_FILE}
 
--r-xr-xr-x  1 will.wang  wheel   331M Jan  1  2000 /usr/local/lib/libtensorflow.2.3.0.dylib
-lrwxr-xr-x  1 will.wang  wheel    25B Jan  1  2000 /usr/local/lib/libtensorflow.2.dylib -> libtensorflow.2.3.0.dylib
-lrwxr-xr-x  1 will.wang  wheel    21B Jan  1  2000 /usr/local/lib/libtensorflow.dylib -> libtensorflow.2.dylib
--r-xr-xr-x  1 will.wang  wheel    28M Jan  1  2000 /usr/local/lib/libtensorflow_framework.2.3.0.dylib
-lrwxr-xr-x  1 will.wang  wheel    35B Jan  1  2000 /usr/local/lib/libtensorflow_framework.2.dylib -> libtensorflow_framework.2.3.0.dylib
-lrwxr-xr-x  1 will.wang  wheel    31B Jan  1  2000 /usr/local/lib/libtensorflow_framework.dylib -> libtensorflow_framework.2.dylib
+# ll /usr/local/lib/libtensorflow*
+
+-r-xr-xr-x  1 root  wheel   331M Jan  1  2000 /usr/local/lib/libtensorflow.2.3.0.dylib
+lrwxr-xr-x  1 root  wheel    25B Jan  1  2000 /usr/local/lib/libtensorflow.2.dylib -> libtensorflow.2.3.0.dylib
+lrwxr-xr-x  1 root  wheel    21B Jan  1  2000 /usr/local/lib/libtensorflow.dylib -> libtensorflow.2.dylib
+-r-xr-xr-x  1 root  wheel    28M Jan  1  2000 /usr/local/lib/libtensorflow_framework.2.3.0.dylib
+lrwxr-xr-x  1 root  wheel    35B Jan  1  2000 /usr/local/lib/libtensorflow_framework.2.dylib -> libtensorflow_framework.2.3.0.dylib
+lrwxr-xr-x  1 root  wheel    31B Jan  1  2000 /usr/local/lib/libtensorflow_framework.dylib -> libtensorflow_framework.2.dylib
+
+# ll /usr/local/include/tensorflow/*
+
+-r-xr-xr-x  1 root  wheel    77K Jan  1  2000 c_api.h
+-r-xr-xr-x  1 root  wheel    13K Jan  1  2000 c_api_experimental.h
+drwxr-xr-x  5 root  wheel   160B Jun 11 00:24 eager
+-r-xr-xr-x  1 root  wheel   2.4K Jan  1  2000 tensor_interface.h
+-r-xr-xr-x  1 root  wheel   1.2K Jan  1  2000 tf_attrtype.h
+-r-xr-xr-x  1 root  wheel   2.7K Jan  1  2000 tf_datatype.h
+-r-xr-xr-x  1 root  wheel   1.2K Jan  1  2000 tf_file_statistics.h
+-r-xr-xr-x  1 root  wheel   3.0K Jan  1  2000 tf_status.h
+-r-xr-xr-x  1 root  wheel   7.4K Jan  1  2000 tf_tensor.h
 ```
 
 ## Tips
