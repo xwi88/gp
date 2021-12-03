@@ -92,6 +92,22 @@ output, err := Predict(modelName, inputS)
 - more docker images ref: [v8fg/docker-compose-resources](https://github.com/v8fg/docker-compose-resources)
 - official images: [TensorFlow Docker](https://www.tensorflow.org/install/docker)
 
+## Quick run in local
+
+```bash
+wget  https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
+export LIB_TENSORFLOW_FILE=libtensorflow-cpu-darwin-x86_64-2.3.0.tar.gz
+tar -C /usr/local -xzf ${LIB_TENSORFLOW_FILE}
+
+#copy lib files to dir /usr/local/lib/
+-r-xr-xr-x  1 will.wang  wheel   331M Jan  1  2000 /usr/local/lib/libtensorflow.2.3.0.dylib
+lrwxr-xr-x  1 will.wang  wheel    25B Jan  1  2000 /usr/local/lib/libtensorflow.2.dylib -> libtensorflow.2.3.0.dylib
+lrwxr-xr-x  1 will.wang  wheel    21B Jan  1  2000 /usr/local/lib/libtensorflow.dylib -> libtensorflow.2.dylib
+-r-xr-xr-x  1 will.wang  wheel    28M Jan  1  2000 /usr/local/lib/libtensorflow_framework.2.3.0.dylib
+lrwxr-xr-x  1 will.wang  wheel    35B Jan  1  2000 /usr/local/lib/libtensorflow_framework.2.dylib -> libtensorflow_framework.2.3.0.dylib
+lrwxr-xr-x  1 will.wang  wheel    31B Jan  1  2000 /usr/local/lib/libtensorflow_framework.dylib -> libtensorflow_framework.2.dylib
+```
+
 ## Tips
 
 - [version incompatible ref](https://github.com/tensorflow/tensorflow/issues/41808)
