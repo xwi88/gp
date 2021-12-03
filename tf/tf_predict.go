@@ -14,15 +14,15 @@ type Model struct {
 	options *tfg.SessionOptions // load model use, session options
 	model   *tfg.SavedModel     // load and save tf model
 
-	outputParamKey string   // required
 	inputParamKey  []string // required
+	outputParamKey string   // required
 
 	count int // stats: load count
 	lock  sync.RWMutex
 }
 
 // New according the input params to generate the special tf model
-func New(name, exportDir string, tags []string, outputParamKey string, inputParamKey ...string) *Model {
+func New(name, exportDir string, tags, inputParamKey []string, outputParamKey string) *Model {
 	return &Model{
 		name:           name,
 		path:           exportDir,
@@ -82,12 +82,12 @@ func (m *Model) Load() error {
 
 // Register register and load model
 func Register(name, exportDir string, tags []string) (*Model, error) {
-	return RegisterWithParamName(name, exportDir, tags, "StatefulPartitionedCall", "serving_default_input")
+	return RegisterWithParamName(name, exportDir, tags, []string{"serving_default_input"}, "StatefulPartitionedCall")
 }
 
 // RegisterWithParamName  register with param key, and load model
-func RegisterWithParamName(name, exportDir string, tags []string, outputParamKey string, inputParamKey ...string) (*Model, error) {
-	m := New(name, exportDir, tags, outputParamKey, inputParamKey...)
+func RegisterWithParamName(name, exportDir string, tags, inputParamKey []string, outputParamKey string) (*Model, error) {
+	m := New(name, exportDir, tags, inputParamKey, outputParamKey)
 	return m, m.Load()
 }
 
