@@ -79,13 +79,13 @@ int main() {
 
 ```bash
 # register model
-RegisterTFModelWithParamName(modelName, exportDir, tags, []string{"param_name_input"}, "param_name_output")
+RegisterTFModelWithParamName(modelName, exportDir, tags, "param_name_output", "param_name_input",)
 
 # predict.go
 # get model
 GetModel(modelName)
 # predict with the special model
-output, err := Predict(modelName, inputS)
+output, err := Predict(modelName, input...)
 ```
 
 ### Params Look Up

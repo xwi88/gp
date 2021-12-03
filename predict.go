@@ -46,7 +46,6 @@ func RegisterTFModelWithParamName(name, path string, tags []string, outputParamK
 		globalModels[name] = m
 		return true
 	}
-	// 	TODO register failed
 	return false
 }
 
