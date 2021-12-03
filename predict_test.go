@@ -49,7 +49,7 @@ func TestPredict(t *testing.T) {
 func registerTFModel(modelName string) Model {
 	exportDir := "testdata/saved_model_half_plus_two_cpu/000001"
 	tags := []string{"serve"}
-	if ok := RegisterTFModelWithParamName(modelName, exportDir, tags, []string{"x"}, "y"); ok {
+	if ok := RegisterTFModelWithParamName(modelName, exportDir, tags, "y", "x"); ok {
 		return GetModel(modelName)
 	}
 	return nil

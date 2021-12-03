@@ -22,7 +22,7 @@ type Model struct {
 }
 
 // New according the input params to generate the special tf model
-func New(name, exportDir string, tags, inputParamKey []string, outputParamKey string) *Model {
+func New(name, exportDir string, tags []string, outputParamKey string, inputParamKey ...string) *Model {
 	return &Model{
 		name:           name,
 		path:           exportDir,
@@ -63,7 +63,7 @@ func (m *Model) Predict(dataSet ...interface{}) (ret interface{}, err error) {
 	return
 }
 
-// Load load tf model from special path
+// Load tf model from special path
 func (m *Model) Load() error {
 	m.lock.Lock()
 	defer m.lock.Unlock()
@@ -82,15 +82,16 @@ func (m *Model) Load() error {
 
 // Register register and load model
 func Register(name, exportDir string, tags []string) (*Model, error) {
-	return RegisterWithParamName(name, exportDir, tags, []string{"serving_default_input"}, "StatefulPartitionedCall")
+	return RegisterWithParamName(name, exportDir, tags, "StatefulPartitionedCall", "serving_default_input")
 }
 
-// Register register and load model
-func RegisterWithParamName(name, exportDir string, tags, inputParamKey []string, outputParamKey string) (*Model, error) {
-	m := New(name, exportDir, tags, inputParamKey, outputParamKey)
+// RegisterWithParamName  register with param key, and load model
+func RegisterWithParamName(name, exportDir string, tags []string, outputParamKey string, inputParamKey ...string) (*Model, error) {
+	m := New(name, exportDir, tags, outputParamKey, inputParamKey...)
 	return m, m.Load()
 }
 
+// Destruct destroy model
 func (m *Model) Destruct() error {
 	m.lock.Lock()
 	defer m.lock.Unlock()
