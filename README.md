@@ -60,7 +60,7 @@ int main() {
 
 ### Go Usage
 
-`go get -u github.com/xwi88/gp`
+`go get github.com/xwi88/gp`
 
 ### Example
 
