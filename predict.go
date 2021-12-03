@@ -11,7 +11,7 @@ var globalModels map[string]Model
 
 type Model interface {
 	Load() error
-	Predict(interface{}) (interface{}, error) // input maybe single slice; output as the same
+	Predict(...interface{}) (interface{}, error) // input maybe single slice; output as the same
 	Destruct() error
 }
 
@@ -19,16 +19,18 @@ type Model interface {
 type ModelOptions struct {
 }
 
-//  default param name: input, output
+// RegisterTFModel register TFModel with default output and input param key
 func RegisterTFModel(name, path string, tags []string) bool {
-	return RegisterTFModelWithParamName(name, path, tags, "serving_default_input", "StatefulPartitionedCall")
+	return RegisterTFModelWithParamName(name, path, tags, "StatefulPartitionedCall", "serving_default_input")
 }
 
-func GetModel(modelName string) Model {
-	return globalModels[modelName]
+// GetModel get model by model name
+func GetModel(name string) Model {
+	return globalModels[name]
 }
 
-func RegisterTFModelWithParamName(name, path string, tags []string, inputParamKey, outputParamKey string) bool {
+// RegisterTFModelWithParamName register TFModel with output and variadic input param key
+func RegisterTFModelWithParamName(name, path string, tags []string, outputParamKey string, inputParamKey ...string) bool {
 	gpLock.Lock()
 	defer gpLock.Unlock()
 
@@ -39,31 +41,28 @@ func RegisterTFModelWithParamName(name, path string, tags []string, inputParamKe
 		return true
 	}
 
-	m, err := tf.RegisterWithParamName(name, path, tags, inputParamKey, outputParamKey)
+	m, err := tf.RegisterWithParamName(name, path, tags, outputParamKey, inputParamKey...)
 	if err == nil {
 		globalModels[name] = m
 		return true
 	}
-	// 	TODO register failed
 	return false
 }
 
-func Predict(modelName string, input interface{}) (output interface{}, err error) {
-	if m, exist := globalModels[modelName]; exist {
+// Predict give predict val with model name and variadic input data
+func Predict(name string, input ...interface{}) (output interface{}, err error) {
+	if m, exist := globalModels[name]; exist {
 		output, err = m.Predict(input)
 		return
 	}
-	// TODO log
-
 	return
 }
 
-// Reload reload model
-func Reload(modelName string) error {
-	if m, exist := globalModels[modelName]; exist {
+// Reload model by name
+func Reload(name string) error {
+	if m, exist := globalModels[name]; exist {
 		return m.Load()
 	}
-	//  TODO
 	return nil
 }
 
