@@ -61,7 +61,7 @@ func Test_RegisterTFModel(t *testing.T) {
 
 	rand.Seed(time.Now().UnixNano())
 	inputS := generateSliceFloat2(int(rand.Int31n(20)) + 1)
-	output, err := Predict(modelName, inputS)
+	output, err := Predict(modelName, []interface{}{inputS})
 	if err != nil {
 		t.Errorf("Predict err: %v", err)
 	}
@@ -77,7 +77,7 @@ func Benchmark_RegisterTFModel(b *testing.B) {
 	for i := 0; i < n; i++ {
 		rand.Seed(time.Now().UnixNano())
 		inputS := generateSliceFloat2(int(rand.Int31n(20)) + 1)
-		output, err := Predict(modelName, inputS, inputS)
+		output, err := Predict(modelName, []interface{}{inputS})
 		_ = output
 		_ = err
 	}

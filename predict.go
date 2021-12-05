@@ -11,7 +11,7 @@ var globalModels map[string]Model
 
 type Model interface {
 	Load() error
-	Predict([]interface{}) (interface{}, error) // input maybe single slice; output as the same
+	Predict([]interface{}) (interface{}, error) // input interfacce slice; output as the same
 	Destruct() error
 }
 
@@ -49,8 +49,8 @@ func RegisterTFModelWithParamName(name, path string, tags, inputParamKey []strin
 	return false
 }
 
-// Predict give predict val with model name and variadic input data
-func Predict(name string, input ...interface{}) (output interface{}, err error) {
+// Predict give predict val with model name and input data set
+func Predict(name string, input []interface{}) (output interface{}, err error) {
 	if m, exist := globalModels[name]; exist {
 		output, err = m.Predict(input)
 		return
