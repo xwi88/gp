@@ -85,7 +85,7 @@ RegisterTFModelWithParamName(modelName, exportDir, tags, []string{"param_name_in
 # get model
 GetModel(modelName)
 # predict with the special model
-output, err := Predict(modelName, input...)
+output, err := Predict(modelName, input ...interface{})
 ```
 
 ### Params Look Up
@@ -99,6 +99,8 @@ output, err := Predict(modelName, input...)
 
 |image repos|target|notes|
 |:--|:--|:--|
+|v8fg/ubuntu:22.04-go1.17.4-tf-cpu|build||
+|v8fg/ubuntu:22.04-tf-cpu|run||
 |v8fg/ubuntu:16.04-go1.16-tf-cpu|build||
 |v8fg/ubuntu:16.04-tf-cpu|run||
 
