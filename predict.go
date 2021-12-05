@@ -11,7 +11,7 @@ var globalModels map[string]Model
 
 type Model interface {
 	Load() error
-	Predict(...interface{}) (interface{}, error) // input maybe single slice; output as the same
+	Predict([]interface{}) (interface{}, error) // input maybe single slice; output as the same
 	Destruct() error
 }
 

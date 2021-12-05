@@ -33,7 +33,7 @@ func New(name, exportDir string, tags, inputParamKey []string, outputParamKey st
 }
 
 // Predict tf predict
-func (m *Model) Predict(dataSet ...interface{}) (ret interface{}, err error) {
+func (m *Model) Predict(dataSet []interface{}) (ret interface{}, err error) {
 	if dataSet == nil || len(dataSet) == 0 {
 		return nil, errors.New("nil input")
 	}
