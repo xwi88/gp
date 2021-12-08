@@ -112,3 +112,8 @@ func (m *Model) Name() string {
 func (m *Model) Path() string {
 	return m.path
 }
+
+// Version tensorflow version
+func Version() string {
+	return tfg.Version()
+}
